@@ -7,7 +7,8 @@ const globalifyPlugin = root =>
     }
 
     rule.selectors = rule.selectors.map(selector =>
-      selector.startsWith(':global') ? selector : `:global(${selector})`,
+      selector.startsWith(':local') ? selector.replace(/:local\((.+?)\)(.*)/, '$1 :global($2)') :
+        selector.startsWith(':global') ? selector : `:global(${selector})`,
     )
   })
 

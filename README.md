@@ -29,17 +29,19 @@
 
 ## Installation
 
-`npm install --save-dev svelte-preprocess`
+`npm install -D svelte-preprocess`
 
 The preprocessor module installation is up to the developer.
 
-- `postcss`: `npm install --save-dev postcss`
-- `coffeescript`: `npm install --save-dev coffeescript`
-- `typescript`: `npm install --save-dev typescript`
-- `less`: `npm install --save-dev less`
-- `sass`: `npm install --save-dev node-sass`
-- `pug`: `npm install --save-dev pug`
-- `stylus`: `npm install --save-dev stylus`
+- `postcss`: `npm install -D postcss postcss-load-config`
+- `coffeescript`: `npm install -D coffeescript`
+- `typescript`: `npm install -D typescript`
+- `less`: `npm install -D less`
+- `sass`: `npm install -D node-sass`
+- `pug`: `npm install -D pug`
+- `stylus`: `npm install -D stylus`
+
+_Note: If you want to load your `postcss` configuration from a external file, make sure to also install `postcss-load-config`._
 
 ## Features
 
@@ -377,6 +379,12 @@ const options = {
     compilerOptions: {
       module: 'es2015',
     },
+
+    /**
+     * Type checking can be skipped by setting 'transpileOnly: true'.
+     * This speeds up your build process.
+     */
+    transpileOnly: true,
   },
 
   /** Use a custom preprocess method by passing a function. */
@@ -422,3 +430,25 @@ ul
 ![image](https://user-images.githubusercontent.com/2388078/63219174-8d4d8b00-c129-11e9-9fb0-56260a125155.png)
 
 If you have configured `svelte-preprocess` to use some kind of preprocessor and `svelte-vscode` is displaying errors like it's ignoring your preprocess configuration, that's happening because `svelte-vscode` needs to know how to preprocess your components. `svelte-vscode` works by having a svelte compiler running on the background and you can configure it by [creating a `svelte.config.js`](#with-svelte-vs-code) file on your project's root. Please check this document [With Svelte VS Code](#with-svelte-vs-code) section.
+
+### My `typescript` compilation is sloooooooow
+
+If you have a medium-to-big project, the typescript processor might start to get slow. If you already have an IDE type checking your code, you can speed up the transpilation process by setting `transpileOnly` to `true`:
+
+```js
+const preprocess = require('svelte-preprocess')
+...
+{
+  ...svelteOptions,
+  preprocess: preprocess({
+    typescript: {
+      // skips type checking
+      transpileOnly: true,
+      compilerOptions: {
+        ...
+      },
+    },
+  })
+}
+...
+```

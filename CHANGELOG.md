@@ -1,8 +1,51 @@
-## [2.15.1](https://github.com/kaisermann/svelte-preprocess/compare/v2.15.0...v2.15.1) (2019-08-08)
+## [3.0.2](https://github.com/kaisermann/svelte-preprocess/compare/v3.0.1...v3.0.2) (2019-08-29)
 
 
 ### Bug Fixes
 
+* 🐛 inverted conditionals on typescript transformer ([a6937f0](https://github.com/kaisermann/svelte-preprocess/commit/a6937f0))
+
+
+
+## [3.0.1](https://github.com/kaisermann/svelte-preprocess/compare/v3.0.0...v3.0.1) (2019-08-29)
+
+
+### Bug Fixes
+
+* 🐛 wrong typescript diagnostic filtering ([2630a44](https://github.com/kaisermann/svelte-preprocess/commit/2630a44)), closes [#49](https://github.com/kaisermann/svelte-preprocess/issues/49)
+
+
+
+# [3.0.0](https://github.com/kaisermann/svelte-preprocess/compare/v2.16.0...v3.0.0) (2019-08-28)
+
+
+### Performance Improvements
+
+* ⚡️ make postcss-load-config optional for better pkg size ([7ab9c72](https://github.com/kaisermann/svelte-preprocess/commit/7ab9c72))
+
+
+### BREAKING CHANGES
+
+* To load PostCSS config automatically from a file, now it's needed to
+manually install "postcss-load-config".
+
+
+
+# [2.16.0](https://github.com/kaisermann/svelte-preprocess/compare/v2.15.2...v2.16.0) (2019-08-28)
+
+
+### Features
+
+* 🎸 add "transpileOnly" option to skip type check ([3e46741](https://github.com/kaisermann/svelte-preprocess/commit/3e46741)), closes [#54](https://github.com/kaisermann/svelte-preprocess/issues/54)
+
+
+
+## [2.15.2](https://github.com/kaisermann/svelte-preprocess/compare/v2.15.0...v2.15.2) (2019-08-28)
+
+
+### Bug Fixes
+
+* 🐛 make pug mixins work with space AND tabs ([81b0154](https://github.com/kaisermann/svelte-preprocess/commit/81b0154))
 * rename typescript configuration option to honor the readme docs ([67f2137](https://github.com/kaisermann/svelte-preprocess/commit/67f2137))
 
 

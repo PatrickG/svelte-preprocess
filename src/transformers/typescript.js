@@ -35,23 +35,22 @@ function isSvelteFile(filename) {
 const IMPORTEE_PATTERN = /['"](.*?)['"]/
 function isValidSvelteImportDiagnostic(filename, diagnostic) {
   // TS2307: 'cannot find module'
-  if (diagnostic.code !== 2307) return false
+  if (diagnostic.code !== 2307) return true
 
   const importeeMatch = diagnostic.messageText.match(IMPORTEE_PATTERN)
   // istanbul ignore if
-  if (!importeeMatch) return false
+  if (!importeeMatch) return true
 
   let [, importeePath] = importeeMatch
   /** if we're not dealing with a relative path, assume the file exists */
-  if (importeePath[0] !== '.') return true
+  if (importeePath[0] !== '.') return false
 
   /** if the importee is not a svelte file, do nothing */
-  if (!isSvelteFile(importeePath)) return false
+  if (!isSvelteFile(importeePath)) return true
 
   importeePath = resolve(dirname(filename), importeePath)
-  if (existsSync(importeePath)) return true
 
-  return false
+  return existsSync(importeePath) === false
 }
 
 const TS_TRANSFORMERS = {
@@ -140,15 +139,7 @@ function compileFileFromMemory(compilerOptions, { filename, content }) {
   const diagnostics = [
     ...emitResult.diagnostics,
     ...ts.getPreEmitDiagnostics(program),
-  ].reduce((acc, diagnostic) => {
-    if (isValidSvelteImportDiagnostic(filename, diagnostic)) {
-      return acc
-    }
-
-    acc.push(diagnostic)
-
-    return acc
-  }, [])
+  ].filter(diagnostic => isValidSvelteImportDiagnostic(filename, diagnostic))
 
   return { code, map, diagnostics }
 }
@@ -195,10 +186,23 @@ module.exports = ({ content, filename, options }) => {
     allowNonTsExtensions: true,
   }
 
-  const { code, map, diagnostics } = compileFileFromMemory(compilerOptions, {
-    filename,
-    content,
-  })
+  let code, map, diagnostics
+  if (options.transpileOnly || compilerOptions.transpileOnly) {
+    ;({
+      outputText: code,
+      sourceMapText: map,
+      diagnostics,
+    } = ts.transpileModule(content, {
+      fileName: filename,
+      compilerOptions: compilerOptions,
+      reportDiagnostics: options.reportDiagnostics !== false,
+    }))
+  } else {
+    ;({ code, map, diagnostics } = compileFileFromMemory(compilerOptions, {
+      filename,
+      content,
+    }))
+  }
 
   if (diagnostics.length > 0) {
     // could this be handled elsewhere?

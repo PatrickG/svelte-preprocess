@@ -23,7 +23,9 @@
 - [Limitations](#limitations)
   - [`typescript`](#typescript)
   - [`pug`](#pug)
-- [FAQ](#FAQ)
+- [FAQ](#faq)
+  - [My VS Code is displaying a lot of errors on my templates when I try to use `x`...](#my-vs-code-is-displaying-a-lot-of-errors-on-my-templates-when-i-try-to-use-x)
+  - [My `typescript` compilation is sloooooooow](#my-typescript-compilation-is-sloooooooow)
 
 <!-- /code_chunk_output -->
 
@@ -46,6 +48,8 @@ _Note: If you want to load your `postcss` configuration from a external file, ma
 ## Features
 
 ### Template tag support
+
+Add _vue-like_ support for defining your markup between a `<template>` tag. The tagname can be customized to something like `markup` for example. See [#options](#options).
 
 _Note: only for auto preprocessing_
 
@@ -317,6 +321,15 @@ svelte.preprocess(input, [
 const svelte = require('svelte')
 const sveltePreprocess = require('svelte-preprocess')
 const options = {
+  /**
+   * Define which tag should `svelte-preprocess` look for markup content.
+   *
+   * This is only used if you desire to define your markup between this tag
+   * or to import it from a external file.
+   *
+   * The example below means your markup can be defined inside a `<markup>` tag.
+   **/
+  markupTagName: 'markup',
   /**
    * Extend the default language alias dictionary.
    * Each entry must follow: ['alias', 'languageName']
